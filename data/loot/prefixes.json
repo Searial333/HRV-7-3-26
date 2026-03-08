@@ -1,0 +1,16 @@
+
+[
+  { "name": "Vicious", "statModifiers": { "might": 3, "critChance": 1 } },
+  { "name": "Swift", "statModifiers": { "agility": 3, "moveSpeed": 0.1 } },
+  { "name": "Sturdy", "statModifiers": { "defense": 5 } },
+  { "name": "Arcane", "statModifiers": { "arcanum": 3 } },
+  { "name": "Hallowed", "statModifiers": { "destiny": 2, "defense": 2 } },
+  { "name": "Verdant", "statModifiers": { "plants": 5 } },
+  { "name": "Savage", "statModifiers": { "might": 8, "defense": -2 } },
+  { "name": "Hollow-Forged", "statModifiers": { "arcanum": 5, "might": 3, "defense": -3 } },
+  { "name": "Rusty", "statModifiers": { "might": -2, "agility": -1 } },
+  { "name": "Torn", "statModifiers": { "defense": -3 } },
+  { "name": "Lesser", "statModifiers": { "might": -1, "arcanum": -1, "agility": -1 } },
+  { "name": "Greater", "statModifiers": { "might": 1, "arcanum": 1, "agility": 1 } },
+  { "name": "Flimsy", "statModifiers": { "defense": -3 } }
+]

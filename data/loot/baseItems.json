@@ -1,0 +1,39 @@
+
+[
+  { "id": "dagger_01", "name": "Dagger", "slot": "mainHand", "baseStats": { "agility": 3, "critChance": 2 }, "validZones": ["any"] },
+  { "id": "shortsword_01", "name": "Shortsword", "slot": "mainHand", "baseStats": { "might": 5 }, "validZones": ["any"] },
+  { "id": "handaxe_01", "name": "Hand Axe", "slot": "mainHand", "baseStats": { "might": 7, "agility": -1 }, "validZones": ["farm", "hollow_early"] },
+  { "id": "ritual_scythe_01", "name": "Ritual Scythe", "slot": "mainHand", "baseStats": { "arcanum": 4, "plants": 2 }, "validZones": ["any"] },
+  { "id": "gnarled_staff_01", "name": "Gnarled Staff", "slot": "mainHand", "baseStats": { "arcanum": 6 }, "validZones": ["hollow_early"] },
+  { "id": "buckler_01", "name": "Buckler", "slot": "offHand", "baseStats": { "defense": 3 }, "validZones": ["any"] },
+  { "id": "ritual_totem_01", "name": "Ritual Totem", "slot": "offHand", "baseStats": { "arcanum": 2, "destiny": 1 }, "validZones": ["hollow_early"] },
+  
+  { "id": "leather_cap_01", "name": "Leather Cap", "slot": "head", "baseStats": { "defense": 2 }, "validZones": ["any"] },
+  { "id": "iron_helm_01", "name": "Iron Helm", "slot": "head", "baseStats": { "defense": 4, "might": 1 }, "validZones": ["hollow_early"] },
+  
+  { "id": "leather_jerkin_01", "name": "Leather Jerkin", "slot": "torso", "baseStats": { "defense": 4, "agility": 1 }, "validZones": ["any"] },
+  { "id": "iron_cuirass_01", "name": "Iron Cuirass", "slot": "torso", "baseStats": { "defense": 8, "agility": -2 }, "validZones": ["hollow_early"] },
+  { "id": "acolyte_robes_01", "name": "Acolyte Robes", "slot": "torso", "baseStats": { "defense": 2, "arcanum": 3 }, "validZones": ["any"] },
+
+  { "id": "leather_pauldrons_01", "name": "Leather Pauldrons", "slot": "shoulders", "baseStats": { "defense": 1 }, "validZones": ["any"] },
+  { "id": "iron_spaulders_01", "name": "Iron Spaulders", "slot": "shoulders", "baseStats": { "defense": 3 }, "validZones": ["hollow_early"] },
+
+  { "id": "cloth_bracers_01", "name": "Cloth Bracers", "slot": "wrists", "baseStats": { "arcanum": 1 }, "validZones": ["any"] },
+  { "id": "leather_bracers_01", "name": "Leather Bracers", "slot": "wrists", "baseStats": { "defense": 1 }, "validZones": ["any"] },
+  
+  { "id": "leather_gloves_01", "name": "Leather Gloves", "slot": "hands", "baseStats": { "agility": 1 }, "validZones": ["any"] },
+  { "id": "iron_gauntlets_01", "name": "Iron Gauntlets", "slot": "hands", "baseStats": { "might": 1, "defense": 1 }, "validZones": ["hollow_early"] },
+  
+  { "id": "leather_belt_01", "name": "Leather Belt", "slot": "waist", "baseStats": { "defense": 1 }, "validZones": ["any"] },
+  
+  { "id": "cloth_trousers_01", "name": "Cloth Trousers", "slot": "legs", "baseStats": { "defense": 1 }, "validZones": ["any"] },
+  { "id": "leather_pants_01", "name": "Leather Pants", "slot": "legs", "baseStats": { "defense": 2 }, "validZones": ["hollow_early"] },
+  
+  { "id": "leather_boots_01", "name": "Leather Boots", "slot": "feet", "baseStats": { "moveSpeed": 0.1, "defense": 1 }, "validZones": ["any"] },
+
+  { "id": "bone_charm_01", "name": "Bone Charm", "slot": "neck", "baseStats": { "arcanum": 2, "destiny": 1 }, "validZones": ["hollow_early"] },
+  { "id": "woven_idol_01", "name": "Woven Idol", "slot": "neck", "baseStats": { "plants": 2 }, "validZones": ["farm"] },
+  
+  { "id": "iron_ring_01", "name": "Iron Ring", "slot": "finger1", "baseStats": { "defense": 1 }, "validZones": ["any"] },
+  { "id": "silver_ring_01", "name": "Silver Ring", "slot": "finger2", "baseStats": { "arcanum": 1 }, "validZones": ["hollow_early"] }
+]

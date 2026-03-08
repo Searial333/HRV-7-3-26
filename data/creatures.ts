@@ -1,0 +1,76 @@
+
+
+import type { CreatureTemplate } from '../types/index';
+
+export const CREATURE_TEMPLATES: {[key: string]: CreatureTemplate} = {
+    weeping_root: {
+        name: 'Weeping Root',
+        description: 'A twisted, ambulatory root that weeps a corrosive sap.',
+        drops: { 'Oak Wood': [1, 3], 'Weeping Essence': [1, 1] },
+        baseHp: 30,
+        baseDamage: 5,
+        stats: { mad: 3, sad: 2, pad: 5, dad: 1 },
+        moveSpeed: 1.5, // tiles per second
+        detectionRange: 8,
+        attackRange: 1.2,
+        attackCooldown: 2000,
+        xpValue: 10,
+        walkAnimSpeed: 5,
+    },
+    shadow_creeper: {
+        name: 'Shadow Creeper',
+        description: 'A skittering creature of pure shadow, hard to pin down.',
+        drops: { 'Shadowshroom': [1, 2] },
+        baseHp: 25,
+        baseDamage: 8,
+        stats: { mad: 6, sad: 4, pad: 2, dad: 2 },
+        moveSpeed: 2.5,
+        detectionRange: 10,
+        attackRange: 1.0,
+        attackCooldown: 1500,
+        xpValue: 12,
+        walkAnimSpeed: 10,
+    },
+    stone_golem: {
+        name: 'Stone Golem',
+        description: 'A slow but incredibly resilient construct, animated by a captured earth spirit.',
+        drops: { 'Stone': [3, 5], 'Iron Ore': [1, 2], 'Glimmering Dust': [0, 1] },
+        baseHp: 80,
+        baseDamage: 10,
+        stats: { mad: 2, sad: 1, pad: 8, dad: 3 },
+        moveSpeed: 1.0,
+        detectionRange: 6,
+        attackRange: 1.5,
+        attackCooldown: 3000,
+        xpValue: 25,
+        walkAnimSpeed: 3,
+    },
+    whispering_shade: {
+        name: 'Whispering Shade',
+        description: 'A tormented spirit whose whispers can unnerve the most steadfast warrior.',
+        drops: { 'Cursed Coin': [1, 1], 'Glimmering Dust': [1, 2] },
+        baseHp: 40,
+        baseDamage: 12,
+        stats: { mad: 4, sad: 7, pad: 1, dad: 5 },
+        moveSpeed: 2.0,
+        detectionRange: 9,
+        attackRange: 2.5,
+        attackCooldown: 2200,
+        xpValue: 20,
+        walkAnimSpeed: 0, // Floats, doesn't walk
+    },
+    heart_of_the_hollow: {
+        name: 'Heart of the Hollow',
+        description: "The pulsating, malevolent core of the dungeon's corruption.",
+        drops: { 'Perfect Heartstone': [1, 1], 'Gold': [50, 100] },
+        baseHp: 500,
+        baseDamage: 15,
+        stats: { mad: 5, sad: 8, pad: 5, dad: 8 },
+        moveSpeed: 0,
+        detectionRange: 20,
+        attackRange: 15,
+        attackCooldown: 1800,
+        xpValue: 500,
+        walkAnimSpeed: 0,
+    }
+};

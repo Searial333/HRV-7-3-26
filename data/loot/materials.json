@@ -1,0 +1,11 @@
+
+[
+  { "name": "Oak", "statModifiers": { "defense": 1 }, "inherentEffect": null },
+  { "name": "Iron", "statModifiers": { "might": 1, "defense": 1, "agility": -1 }, "inherentEffect": null },
+  { "name": "Rotwood", "statModifiers": { "arcanum": 2, "defense": -1 }, "inherentEffect": "Boosts ritual power near trees." },
+  { "name": "Shadow-Silk", "statModifiers": { "agility": 2, "arcanum": 1 }, "inherentEffect": "Slightly muffles sound." },
+  { "name": "Bone", "statModifiers": { "destiny": 1 }, "inherentEffect": null },
+  { "name": "Leather", "statModifiers": { "agility": 1 }, "inherentEffect": null },
+  { "name": "Wealdwood", "statModifiers": { "arcanum": 1, "might": 1 }, "inherentEffect": null },
+  { "name": "Silver", "statModifiers": { "arcanum": 2 }, "inherentEffect": "Glows faintly in darkness." }
+]

@@ -1,0 +1,10 @@
+
+[
+  { "name": "Pristine", "statModifiers": {}, "visualTags": [] },
+  { "name": "Blood-Stained", "statModifiers": { "might": 1, "destiny": 1 }, "visualTags": ["shader_blood_drip"] },
+  { "name": "Moss-Covered", "statModifiers": { "plants": 1 }, "visualTags": ["texture_fungal_bark"] },
+  { "name": "Rune-Etched", "statModifiers": { "arcanum": 1 }, "visualTags": ["glow_blue"] },
+  { "name": "Cracked", "statModifiers": { "defense": -2 }, "visualTags": ["texture_cracked"] },
+  { "name": "Chipped", "statModifiers": { "might": -1 }, "visualTags": [] },
+  { "name": "Ancient", "statModifiers": { "destiny": 2 }, "visualTags": ["glow_faint"] }
+]

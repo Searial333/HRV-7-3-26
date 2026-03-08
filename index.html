@@ -1,0 +1,550 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hollowroot Vale</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-bg-dark: #0a0807;
+            --color-parchment: #d7c7b2;
+            --color-parchment-dark: #ab987a;
+            --color-iron: #3d352e;
+            --color-iron-light: #5a5149;
+            --color-stone: #4b5563;
+            --color-wood: #4a2d1d;
+            --color-wood-light: #6f452a;
+            --color-glow-blue: #81d4fa;
+            --color-glow-rune: #4dd0e1;
+            --color-health: #b91c1c;
+            --color-wound: #7e22ce;
+            --color-xp: #d97706;
+            --color-metal-trim: #c0c0c0;
+            --color-success: #84cc16;
+            --color-danger: #ef4444;
+            --rarity-crude: #9ca3af;
+            --rarity-simple: #f5f1e8;
+            --rarity-standard: #60a5fa;
+            --rarity-premium: #c084fc;
+            --rarity-perfect: #f59e0b;
+        }
+
+        body {
+            background-color: var(--color-bg-dark);
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 32px 32px;
+            color: var(--color-parchment);
+            font-family: 'IM Fell English SC', serif;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .font-deco { font-family: 'Cinzel', serif; }
+
+        #game-container {
+            position: relative;
+            width: 95vw;
+            max-width: calc(95vh * (16 / 9)); /* Maintain 16:9 aspect ratio */
+            aspect-ratio: 16 / 9;
+            border: 4px solid var(--color-iron);
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            background: #000;
+        }
+
+        #game-canvas {
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+        }
+        
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(4px);
+        }
+
+        .modal-content {
+            background: var(--color-bg-dark);
+            border: 2px solid var(--color-iron-light);
+            padding: 2rem;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.9);
+            position: relative;
+        }
+        
+        .modal-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: var(--color-parchment);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .action-btn {
+            background: var(--color-wood);
+            border: 2px solid var(--color-wood-light);
+            padding: 0.5rem 1rem;
+            color: var(--color-parchment);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Cinzel', serif;
+        }
+        .action-btn:hover { background: var(--color-wood-light); }
+        .action-btn:disabled { background: var(--color-iron); color: var(--color-stone); cursor: not-allowed; }
+        
+        .text-input {
+             background: var(--color-parchment-dark);
+             border: 2px solid var(--color-iron);
+             color: var(--color-bg-dark);
+             padding: 0.5rem;
+             width: 100%;
+        }
+
+        #hud-container {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: flex-end;
+            gap: 1.5rem;
+            pointer-events: none;
+        }
+        
+        .hud-globe {
+            width: 120px;
+            height: 120px;
+            border: 5px solid var(--color-metal-trim);
+            border-radius: 50%;
+            background: rgba(10,8,7,0.8);
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 0 15px rgba(0,0,0,0.7), inset 0 0 10px rgba(0,0,0,0.9);
+        }
+
+        .globe-fill {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            transition: height 0.3s ease-in-out;
+            border-top: 2px solid rgba(255,255,255,0.5);
+        }
+        
+        #health-globe-fill { background: var(--color-health); }
+        #mana-globe-fill { background: var(--color-wound); }
+        
+        .globe-value {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.2rem;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 2px 2px 4px #000;
+        }
+
+        #bottom-bar-center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            padding-bottom: 5px;
+        }
+
+        #xp-bar {
+            width: 500px;
+            height: 12px;
+            background: rgba(0,0,0,0.7);
+            border: 2px solid var(--color-metal-trim);
+            border-radius: 6px;
+        }
+
+        #xp-bar-fill {
+            height: 100%;
+            background: var(--color-xp);
+            border-radius: 4px;
+            transition: width 0.3s;
+        }
+        
+        #hotbar {
+            display: flex;
+            gap: 0.5rem;
+            background: rgba(0,0,0,0.6);
+            padding: 0.5rem;
+            border: 2px solid var(--color-iron-light);
+            border-radius: 8px;
+            pointer-events: all;
+        }
+        
+        .hotbar-slot {
+            width: 50px;
+            height: 50px;
+            border: 2px solid var(--color-stone);
+            background: var(--color-iron);
+            cursor: pointer;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .hotbar-slot.active {
+            border-color: var(--color-parchment);
+            transform: scale(1.1);
+            box-shadow: 0 0 10px var(--color-parchment);
+        }
+        .hotbar-icon { width: 80%; height: 80%; object-fit: contain; }
+        
+        #damage-flash {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(255, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.1s;
+            pointer-events: none;
+        }
+        
+        #tooltip {
+            display: none;
+            position: fixed;
+            background: rgba(0,0,0,0.9);
+            border: 1px solid var(--color-iron-light);
+            padding: 0.75rem;
+            border-radius: 4px;
+            z-index: 1000;
+            max-width: 250px;
+            pointer-events: none;
+        }
+        #tooltip h4 { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--color-parchment); margin-bottom: 0.5rem; }
+        #tooltip p { margin: 0; }
+        
+        .journal-modal {
+            max-width: 1000px;
+            height: 80%;
+            padding: 0;
+        }
+        #journal-menu-content { display: flex; height: 100%; }
+        #journal-tabs {
+            width: 200px;
+            background: var(--color-bg-dark);
+            border-right: 2px solid var(--color-iron);
+            padding: 1rem;
+            flex-shrink: 0;
+        }
+        .journal-tab-btn {
+            display: block; width: 100%; text-align: left; padding: 0.75rem;
+            margin-bottom: 0.5rem; border: 1px solid transparent;
+        }
+        .journal-tab-btn.active { background: var(--color-wood); border-color: var(--color-wood-light); }
+        #journal-main-content { flex-grow: 1; padding: 1.5rem; overflow-y: auto; position: relative; }
+        .journal-tab-content { display: none; }
+        .journal-tab-content.active { display: grid; } /* Using grid for layout */
+        
+        /* Journal deep view */
+        #journal-menu.deep-view #journal-tabs { display: none; }
+        #journal-back-btn { display: none; }
+        #journal-menu.deep-view #journal-back-btn { display: block; position: absolute; top: 1.5rem; left: 1.5rem; z-index: 10; }
+
+        #character-content { grid-template-columns: 1fr 1.5fr; gap: 2rem; }
+        #stat-panels { display: flex; flex-direction: column; gap: 1rem; }
+        #character-sheet { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(6, 1fr); gap: 0.5rem; }
+        .equipment-slot {
+            border: 2px dashed var(--color-stone); color: var(--color-stone);
+            display: flex; align-items: center; justify-content: center;
+            aspect-ratio: 1/1; cursor: pointer;
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+        }
+        .equipment-slot.filled { border-style: solid; }
+        .stat-line { display: flex; justify-content: space-between; align-items: center; padding: 0.2rem 0; border-bottom: 1px solid var(--color-iron); }
+        .stat-upgrade-btn { background: var(--color-success); color: var(--color-bg-dark); border: none; border-radius: 50%; width: 20px; height: 20px; cursor: pointer; }
+        .stat-upgrade-btn:disabled { background: var(--color-iron); }
+        .stat-breakdown { border-left: 2px solid var(--color-wood-light); padding-left: 0.5rem; margin-top: 0.25rem; font-size: 0.9rem;}
+        .tooltip-stat-source { display: flex; justify-content: space-between; }
+        
+        #inventory-content.active { display: grid; grid-template-columns: 2fr 1fr; gap: 1rem; height: 100%; }
+        #inventory-left-panel { display: grid; grid-template-rows: auto auto 1fr; gap: 0.5rem; height: 100%; overflow: hidden; }
+        #gear-inventory-list { overflow-y: auto; min-height: 100px; }
+        #inventory-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(64px, 1fr)); gap: 0.5rem; align-content: start; overflow-y: auto; }
+        .inventory-item { width: 64px; height: 64px; border: 2px solid var(--color-stone); position: relative; cursor: pointer; background: var(--color-iron); }
+        .inventory-item.active { border-color: var(--color-parchment-dark); }
+        .inventory-item img { width: 100%; height: 100%; object-fit: contain; }
+        .inventory-item-count { position: absolute; bottom: 2px; right: 4px; font-size: 0.9rem; text-shadow: 1px 1px 2px #000; }
+        
+        .gear-item-row { padding: 0.3rem 0.5rem; cursor: pointer; transition: background 0.2s; }
+        .gear-item-row:hover { background: var(--color-iron-light); }
+        .gear-item-row.active { background: var(--color-wood); }
+        
+        #inventory-details-pane { padding: 1rem; background: var(--color-iron); }
+
+        .journal-sub-tabs { display: flex; gap: 1rem; margin-bottom: 1rem; border-bottom: 2px solid var(--color-iron); }
+        .journal-sub-tab-btn { padding: 0.5rem 0; border-bottom: 2px solid transparent; }
+        .journal-sub-tab-btn.active { border-bottom-color: var(--color-parchment-dark); color: var(--color-parchment-dark); }
+        .pedia-entry { border-bottom: 1px solid var(--color-iron); padding: 0.75rem 0; }
+        
+        .forge-tabs { display: flex; gap: 1rem; border-bottom: 2px solid var(--color-iron); }
+        .forge-tab-btn { padding: 0.5rem 1rem; }
+        .forge-tab-btn.active { background: var(--color-iron); }
+        #crafting-panel, #upgrade-panel { display: none; width: 100%; }
+        #crafting-panel.active, #upgrade-panel.active { display: flex; }
+        #upgrade-panel { gap: 1.5rem; }
+        #upgrade-gear-list { width: 250px; flex-shrink: 0; }
+        #upgrade-station { flex-grow: 1; }
+        #upgrade-item-slot { width: 128px; height: 128px; border: 2px dashed var(--color-stone); display: flex; align-items: center; justify-content: center; }
+        #upgrade-item-slot img { width: 90%; height: 90%; object-fit: contain; }
+
+        #minimap-container {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            width: 180px;
+            height: 180px;
+            border: 3px solid var(--color-iron-light);
+            border-radius: 50%;
+            background: rgba(10,8,7,0.8);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            overflow: hidden;
+            pointer-events: none;
+        }
+        #minimap-canvas {
+            width: 100%;
+            height: 100%;
+        }
+        #minimap-info-banner {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(10,8,7,0.7);
+            padding: 5px;
+            text-align: center;
+            font-size: 14px;
+            pointer-events: all;
+            color: var(--color-parchment);
+            border-bottom-left-radius: 90px;
+            border-bottom-right-radius: 90px;
+        }
+        #minimap-info-banner > div {
+            line-height: 1.2;
+        }
+        #info-date {
+            font-family: 'Cinzel', serif;
+            font-size: 15px;
+        }
+    </style>
+<script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.28.0"
+  }
+}
+</script>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="game-canvas"></canvas>
+        <div id="minimap-container">
+            <canvas id="minimap-canvas"></canvas>
+            <div id="minimap-info-banner">
+                <div id="info-date"></div>
+                <div id="info-time"></div>
+                <div id="info-dungeon-floor" style="display: none;"></div>
+            </div>
+        </div>
+        <div id="damage-flash"></div>
+        <div id="hud-container">
+            <div id="health-globe" class="hud-globe">
+                <div id="health-globe-fill" class="globe-fill"></div>
+                <div id="health-globe-value" class="globe-value">100</div>
+            </div>
+            <div id="bottom-bar-center">
+                <div id="hotbar"></div>
+                <div id="xp-bar"><div id="xp-bar-fill"></div></div>
+            </div>
+            <div id="mana-globe" class="hud-globe">
+                <div id="mana-globe-fill" class="globe-fill"></div>
+                <div id="mana-globe-value" class="globe-value">0</div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tooltip"></div>
+
+    <!-- Main Menu -->
+    <div id="main-menu-modal" class="modal-backdrop">
+        <div class="modal-content text-center">
+            <h1 class="text-4xl font-deco mb-4">Hollowroot Vale</h1>
+            <p class="mb-6">A ritual farming sim and folk-horror action RPG.</p>
+            <div class="mb-4">
+                <label for="player-name-input">Enter your name:</label>
+                <input type="text" id="player-name-input" class="text-input mt-2">
+            </div>
+            <div class="flex justify-center gap-4">
+                <button id="begin-cycle-btn" data-action="begin-cycle" class="action-btn" disabled>Begin Cycle</button>
+                <button data-action="load-game" class="action-btn">Continue</button>
+                <button data-action="open-settings" class="action-btn">Settings</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Settings -->
+    <div id="settings-modal" class="modal-backdrop">
+        <div class="modal-content">
+            <button class="modal-close-btn" data-action="close-modal">&times;</button>
+            <h2 class="text-2xl font-deco mb-4">Settings</h2>
+            <div class="mb-4">
+                <label for="resolution-select">Resolution:</label>
+                <select id="resolution-select" data-action="set-resolution" class="text-input mt-2">
+                    <option value="854x480">854x480 (16:9)</option>
+                    <option value="1280x720">1280x720 (16:9)</option>
+                    <option value="1366x768">1366x768</option>
+                    <option value="1920x1080">1920x1080 (16:9)</option>
+                </select>
+            </div>
+             <button data-action="save-game" class="action-btn">Save Game</button>
+        </div>
+    </div>
+
+    <!-- Journal Menu -->
+    <div id="journal-menu" class="modal-backdrop">
+        <div class="modal-content journal-modal">
+            <button class="modal-close-btn" data-action="close-modal">&times;</button>
+            <div id="journal-menu-content">
+                <div id="journal-tabs">
+                    <button class="journal-tab-btn" data-tab="character">Character</button>
+                    <button class="journal-tab-btn" data-tab="inventory">Inventory</button>
+                    <button class="journal-tab-btn" data-tab="journal">Journal</button>
+                    <button class="journal-tab-btn" data-tab="pedia">Pedia</button>
+                    <button class="journal-tab-btn" data-tab="relationships">Relationships</button>
+                    <button class="journal-tab-btn" data-tab="legacy">Legacy</button>
+                </div>
+                <div id="journal-main-content">
+                    <button id="journal-back-btn" class="action-btn" data-action="journal-back">&larr; Back to Menu</button>
+                    <div id="character-content" class="journal-tab-content">
+                        <div id="stat-panels">
+                           <div id="core-stats-panel"></div>
+                           <div id="derived-stats-panel"></div>
+                        </div>
+                        <div id="character-sheet">
+                           <div class="equipment-slot" data-slot="head"></div>
+                           <div class="equipment-slot" data-slot="shoulders"></div>
+                           <div class="equipment-slot" data-slot="neck"></div>
+                           <div class="equipment-slot" data-slot="hands"></div>
+                           <div class="equipment-slot" data-slot="torso"></div>
+                           <div class="equipment-slot" data-slot="wrists"></div>
+                           <div class="equipment-slot" data-slot="waist"></div>
+                           <div class="equipment-slot" data-slot="legs"></div>
+                           <div class="equipment-slot" data-slot="finger1"></div>
+                           <div class="equipment-slot" data-slot="mainHand"></div>
+                           <div class="equipment-slot" data-slot="feet"></div>
+                           <div class="equipment-slot" data-slot="finger2"></div>
+                           <div class="equipment-slot" data-slot="offHand"></div>
+                        </div>
+                    </div>
+                    <div id="inventory-content" class="journal-tab-content">
+                       <div id="inventory-left-panel">
+                           <div class="flex justify-between items-center flex-shrink-0">
+                               <h4 class="font-deco text-lg">Inventory</h4>
+                               <div id="player-gold-display" class="font-deco text-lg text-amber-400">0 Gold</div>
+                           </div>
+                           <div>
+                                <h4 class="font-deco text-lg border-b border-iron mb-2">Gear</h4>
+                                <div id="gear-inventory-list"></div>
+                           </div>
+                           <div class="flex flex-col min-h-0">
+                                <h4 class="font-deco text-lg border-b border-iron my-2">Materials & Consumables</h4>
+                                <div id="inventory-grid"></div>
+                           </div>
+                       </div>
+                       <div id="inventory-details-pane"></div>
+                    </div>
+                    <div id="journal-content" class="journal-tab-content">
+                       <div id="journal-entry-list"></div>
+                    </div>
+                    <div id="pedia-content" class="journal-tab-content !block">
+                        <div class="journal-sub-tabs">
+                           <button class="journal-sub-tab-btn" data-subtab="plants">Flora & Materials</button>
+                           <button class="journal-sub-tab-btn" data-subtab="bestiary">Bestiary</button>
+                        </div>
+                        <div id="plant-pedia-content"></div>
+                        <div id="bestiary-content" style="display: none;"></div>
+                    </div>
+                    <div id="relationships-content" class="journal-tab-content"><p>Relationships content...</p></div>
+                    <div id="legacy-content" class="journal-tab-content"><p>Legacy content...</p></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Crafting Menu -->
+    <div id="crafting-menu" class="modal-backdrop">
+        <div class="modal-content max-w-4xl">
+            <button class="modal-close-btn" data-action="close-modal">&times;</button>
+            <h2 class="text-2xl font-deco mb-4">The Forge</h2>
+            <div class="forge-tabs">
+                <button class="forge-tab-btn active" data-tab="crafting">Crafting</button>
+                <button class="forge-tab-btn" data-tab="upgrade">Upgrade</button>
+            </div>
+            <div id="crafting-panel" class="active">
+                <div id="crafting-recipe-list" class="w-1/3 border-r border-iron pr-4"></div>
+                <div id="crafting-details" class="w-2/3 pl-4"></div>
+            </div>
+            <div id="upgrade-panel">
+                <div id="upgrade-gear-list" class="border-r border-iron pr-4"></div>
+                <div id="upgrade-station" class="pl-4">
+                    <div id="upgrade-item-slot"></div>
+                    <ul id="upgrade-materials-list"></ul>
+                    <div id="upgrade-cost-info"></div>
+                    <button id="upgrade-button" class="action-btn" data-action="upgrade-gear">Upgrade</button>
+                    <p id="upgrade-status-message" class="opacity-0 transition-opacity"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hollow Maw Portal -->
+    <div id="hollow-maw-modal" class="modal-backdrop">
+        <div class="modal-content text-center">
+             <button class="modal-close-btn" data-action="close-modal">&times;</button>
+             <h2 class="text-3xl font-deco mb-4">The Hollow's Maw</h2>
+             <p id="hollow-description-content" class="italic my-6"></p>
+             <button class="action-btn" data-action="start-dungeon">Enter the Hollow</button>
+        </div>
+    </div>
+
+    <!-- NPC Dialogue -->
+    <div id="npc-dialogue-modal" class="modal-backdrop">
+        <div class="modal-content">
+            <h2 id="npc-name-heading" class="text-2xl font-deco mb-4"></h2>
+            <p id="npc-dialogue-content" class="my-4"></p>
+            <div id="npc-dialogue-options" class="flex flex-col items-start gap-2 mt-4"></div>
+        </div>
+    </div>
+
+    <script type="module" src="/index.tsx"></script>
+</body>
+</html>

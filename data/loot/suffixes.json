@@ -1,0 +1,14 @@
+
+[
+  { "name": "of Might", "statModifiers": { "might": 3 } },
+  { "name": "of Agility", "statModifiers": { "agility": 3 } },
+  { "name": "of Protection", "statModifiers": { "defense": 4 } },
+  { "name": "of the Leech", "statModifiers": { "might": 2 }, "effects": ["lifesteal_1"] },
+  { "name": "of the Vale", "statModifiers": { "plants": 3, "defense": 1 } },
+  { "name": "of Damnation", "statModifiers": { "might": 5, "arcanum": 5, "defense": -4 } },
+  { "name": "of Misfortune", "statModifiers": { "destiny": -2 } },
+  { "name": "of Frailty", "statModifiers": { "defense": -4 } },
+  { "name": "of the Scholar", "statModifiers": { "science": 3 } },
+  { "name": "of the Warden", "statModifiers": { "defense": 6, "agility": -1 } },
+  { "name": "of the Void", "statModifiers": { "arcanum": 6, "destiny": -1 } }
+]

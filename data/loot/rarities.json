@@ -1,0 +1,8 @@
+
+[
+  { "name": "Crude", "color": "#9ca3af", "affixCount": 1, "dropWeight": 45 },
+  { "name": "Simple", "color": "#f5f1e8", "affixCount": 1, "dropWeight": 30 },
+  { "name": "Standard", "color": "#60a5fa", "affixCount": 2, "dropWeight": 20 },
+  { "name": "Premium", "color": "#c084fc", "affixCount": 3, "dropWeight": 8 },
+  { "name": "Perfect", "color": "#f59e0b", "affixCount": 4, "dropWeight": 2 }
+]
