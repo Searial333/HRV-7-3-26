@@ -1,5 +1,4 @@
 
-
 // --- Core Game State ---
 export interface GameStateData {
     player: Player;
@@ -148,17 +147,13 @@ export interface Entity {
     y: number;
 }
 
-export interface Enemy extends Entity {
-    type: string;
-    hp: number;
-    maxHp: number;
-    lastHitTime: number;
-    aiState: 'idle' | 'chase' | 'attack';
-    lastAttackTime: number;
-    isMoving: boolean;
-    animationFrame: number;
-    attackAnimationProgress?: number;
-}
+// Re-export the advanced Enemy from the combat system as the primary type.
+// This is the lifelike ARPG enemy with personality, phases, abilities, statuses, etc.
+export type { Enemy, AIState, StatusEffectInstance, DamagePacket, CreatureTemplate as AdvancedCreatureTemplate } from './combat';
+
+// Keep a minimal compatibility note: existing code that only used the old shape
+// will still compile if it only touches common fields (id, x, y, hp, maxHp, etc.).
+// Full migration of Game.ts / Renderer is in progress.
 
 export interface NPC extends Entity {
     name: string;
@@ -285,7 +280,8 @@ export interface Gear {
     value: number;
 }
 
-
+// Legacy simple CreatureTemplate kept temporarily for any remaining references.
+// Prefer AdvancedCreatureTemplate / the one in types/combat.ts going forward.
 export interface CreatureTemplate {
     name: string;
     description: string;
